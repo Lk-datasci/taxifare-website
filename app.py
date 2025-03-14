@@ -1,13 +1,13 @@
 import streamlit as st
 import folium
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 import datetime
 import requests
 from geopy.geocoders import Nominatim
 
 
 def get_coordinates(address):
-    geolocator = Nominatim(user_agent="app")
+    geolocator = Nominatim(user_agent="app", timeout=5)
     location = geolocator.geocode(address)
     if location:
         return location.latitude, location.longitude
@@ -60,7 +60,7 @@ pickup_longitude, pickup_latitude = get_coordinates(pickup_address)
 dropoff_longitude, dropoff_latitude = get_coordinates(dropoff_address)
 
 map_obj = create_map(pickup_latitude, pickup_longitude, dropoff_latitude, dropoff_longitude)
-folium_static(map_obj)
+st_folium(map_obj, width=700, height=500)
 
 passenger_count = st.number_input('How many passenger(s)?', value=0.0)
 st.write(passenger_count, ' people will take a ride')
